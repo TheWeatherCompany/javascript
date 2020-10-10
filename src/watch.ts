@@ -70,7 +70,10 @@ export class Watch {
             errOut = err;
             done(err);
         });
-        stream.on('close', () => done(errOut));
+        stream.on('close', () => {
+            stream.destroy();
+            return done(errOut);
+        });
 
         const req = this.requestImpl.webRequest(requestOptions, (error, response, body) => {
             if (error) {
